@@ -22,7 +22,7 @@
   <ion-item-sliding #item >
     <ion-item *ngFor="let item of tempArray" [ngStyle]="{'color': item.chatBy === 1 ? '#222428' : item.chatBy === 2 ? '#3880ff' : '#2dd36f'}" >
         <p style="font-weight: bold;">{{item.chatContent}}</p>
-        
+
     </ion-item>
   </ion-item-sliding>
 </ion-list>
@@ -43,7 +43,7 @@
 
       <!-- 'background-color':item.chatBy === 1 ? 'red' : background-color':item.chatBy === 2 ? 'green' : '#00c9c7' -->
       <!-- question.score.toFixed(1) < 3 ? 'red' : question.score.toFixed(1) > 7 ? 'green' : '#00c9c7' -->
-      
+
       <!-- <div>
         <ion-img [src]="item.imgSrc" [height]="item.imgHeight" [alt]="item.name"></ion-img>
       </div> -->
@@ -56,7 +56,7 @@
     </ion-card>
   </ion-virtual-scroll>
 </ion-content> -->
-
+</ion-content>
 
 <!-- <br> -->
 
@@ -68,16 +68,14 @@
     Send
   </button>
 </ion-footer-bar> -->
-</ion-content>
-<ion-item slot=fix>
+<!--</ion-content>-->
+<!--<br>-->
+<ion-item>
   <ion-input type="text" placeholder="Enter Question" [(ngModel)]="input"></ion-input>
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" style="background-color:#2196F3;" (click)="sendPostRequest()">
     <i class="material-icons">send</i>
   </button>
  </ion-item>
-
-
-
 <!-- <ion-list *ngFor="let user of tempArray">
   <ion-item>
     <ion-label>{{user.chatContent}}</ion-label>

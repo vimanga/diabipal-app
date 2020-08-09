@@ -53,11 +53,11 @@ export class ConnectDoctorPage implements OnInit {
 
   }
 
-  // updateScroll() {
-  //   if (this.content.scrollToBottom) {
-  //     this.content.scrollToBottom(400);
-  //   }
-  // }
+  updateScroll() {
+    if (this.content.scrollToBottom) {
+      this.content.scrollToBottom(400);
+    }
+  }
 
   delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -72,9 +72,9 @@ export class ConnectDoctorPage implements OnInit {
         for (var i = 0; i < count; i++)
           this.tempArray.push(<DataResponse>data[i]);
         this.delay(300);
-        // setTimeout(() => {
-        //   this.updateScroll();
-        // }, 500);
+        setTimeout(() => {
+          this.updateScroll();
+        }, 500);
         //return tempArray;
       }, error => {
         console.log(error);
@@ -106,7 +106,7 @@ export class ConnectDoctorPage implements OnInit {
           const alert = this.alert.create({
             cssClass: 'my-custom-class',
             header: 'Confirm!',
-            message: 'Im not yet intelligent enough to answer this.. <strong>want to transfer this question to a doctor?</strong>!!!',
+            message: ' <strong>Want to transfer this question to a doctor?</strong>!!!',
             buttons: [
               {
                 text: 'Cancel',
