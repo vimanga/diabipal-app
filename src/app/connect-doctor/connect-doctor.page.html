@@ -9,7 +9,14 @@
 
 <ion-header>
   <ion-toolbar>
+    
+    <ion-item>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="" (click)="redirectToProfile()"></ion-back-button>
+    </ion-buttons>
     <ion-title>Contact-doctor</ion-title>
+    <ion-button color="success" (click)="readmails()">Refresh</ion-button>
+  </ion-item>
   </ion-toolbar>
 </ion-header>
 

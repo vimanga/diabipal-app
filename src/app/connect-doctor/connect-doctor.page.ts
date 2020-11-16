@@ -6,8 +6,8 @@ import { ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { UsersService } from "../users.service";
-
-
+import {LoaderService} from '../loader-service.service'
+import {Router} from "@angular/router";
 
 interface DataResponse {
   id: number;
@@ -32,7 +32,7 @@ export class ConnectDoctorPage implements OnInit {
   messages: Observable<Message[]>;
   tempArray: Message[] = [];
 
-  constructor(private http: HttpClient, public alert: AlertController, private user: UsersService) {
+  constructor(private http: HttpClient, public alert: AlertController, private user: UsersService, private loader: LoaderService, public router: Router) {
     this.sendgetRequest()
   }
 
@@ -49,6 +49,12 @@ export class ConnectDoctorPage implements OnInit {
 
   }
 
+  redirectToProfile() {
+    this.router.navigate(['/tabs'],{
+      replaceUrl : true
+     })
+  }
+
   ionViewDidEnter(){
 
   }
@@ -63,9 +69,19 @@ export class ConnectDoctorPage implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  readmails() {
+    return this.http.get("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/saveemails").subscribe
+    (data => {
+      console.log(data);
+      location.reload();
+    }, error => {
+      console.log(error);
+    });
+  }
+
   sendgetRequest() {
-    return this.http.get("http://ec2-100-27-11-241.compute-1.amazonaws.com:8080/chat/getuserchat/" + this.user.getUID())
-      // return this.http.get("http://localhost:8080/chat/getuserchat/"+this.user.getUID())
+    //return this.http.get("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/getuserchat/" + this.user.getUID())
+    return this.http.get("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/getuserchat/"+this.user.getUID())
       .subscribe(data => {
         console.log(data);
         var count = Object.keys(data).length;
@@ -85,6 +101,7 @@ export class ConnectDoctorPage implements OnInit {
 
   async sendPostRequest() {
 
+    this.loader.presentLoading('Please wait')
     const { input } = this
 
     //await this.showAlert("Success!", "Welcome aboard")
@@ -97,11 +114,12 @@ export class ConnectDoctorPage implements OnInit {
       "firebaseid": this.user.getUID()
     }
 
-    this.http.post("http://ec2-100-27-11-241.compute-1.amazonaws.com:8080/chat/getreply", postData)
+    //this.http.post("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/getreply", postData)
+    this.http.post("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/getreply", postData)
       .subscribe(data => {
         console.log(data['chatContent']);
         let x = 1;
-        if (data['chatContent'] == " your message will be redirected to a doctor,") {
+        if (data['chatContent'] == " your message will be redirected to a doctor") {
           x = 0;
           const alert = this.alert.create({
             cssClass: 'my-custom-class',
@@ -119,12 +137,14 @@ export class ConnectDoctorPage implements OnInit {
               }, {
                 text: 'Okay',
                 handler: () => {
-                  this.http.post("http://ec2-100-27-11-241.compute-1.amazonaws.com:8080/chat/sendmail", postData)
+                  //this.http.post("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/sendmail", postData)
+                  this.http.post("http://ec2-54-165-166-212.compute-1.amazonaws.com:8080/chat/sendmail", postData)
                     .subscribe(data => {
                       console.log(data);
                     }, error => {
                       console.log(error);
                     });
+                    this.loader.presentLoading('Please wait')
                   console.log('Confirm Okay');
                   console.log("***********Sending mail");
                   location.reload();
@@ -142,6 +162,7 @@ export class ConnectDoctorPage implements OnInit {
         console.log(error);
       });
   }
+  
 
 
   async showAlert(header: string, message: string) {
